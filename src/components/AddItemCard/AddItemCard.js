@@ -2,7 +2,11 @@ import React from "react";
 
 const AddItemCard = () => {
   return (
-    <div className=" hover:scale-105 hover:ease-in-out hover:duration-500 border-2 border-dotted bg-slate-50 border-gray-400 rounded-lg lg:w-56 lg:h-56 flex flex-col items-center justify-center">
+    <div
+      className=" hover:scale-105 hover:ease-in-out hover:duration-500 border-2 border-dotted bg-slate-50 border-gray-400 rounded-lg 
+        lg:w-56 lg:h-auto md:h-auto sm:h-auto xs:h-40
+        flex flex-col items-center justify-center"
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
