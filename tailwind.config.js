@@ -8,6 +8,7 @@ module.exports = {
             sm: "640px",
             md: "800px",
             lg: "1340px",
+            xl: "1670px",
         },
     },
     plugins: [],

@@ -31,24 +31,20 @@ const Home = () => {
     image10,
     image11,
   ]);
-  const [selectedIndex, setSelectedIndex] = useState([]);
-  const [draggedIndex, setDraggedIndex] = useState(null);
 
-  const handleDeleteSelected = () => {
-    if (selectedIndex.length > 0) {
-      // run a loop on main-data array and search for those selected Indexes and remove them.
-      let newArray = items.filter(
-        (item, index) => !selectedIndex.includes(index)
-      );
-      setSelectedIndex([]);
-      setCheckedNum(0);
-      setItems(newArray);
-      console.log("Target >>> ", newArray);
-      // setItems("wow>>", newArr);
-    } else {
-      console.log("Selected Nai ", selectedIndex);
-    }
-  };
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  //   const onDragEnd = (result) => {
+  //     if (!result.destination) {
+  //       return; // Dropped outside the list
+  //     }
+
+  //     const reorderedItems = [...items];
+  //     const [movedItem] = reorderedItems.splice(result.source.index, 1);
+  //     reorderedItems.splice(result.destination.index, 0, movedItem);
+
+  //     setItems(reorderedItems);
+  //   };
+
   const handleDragStart = (e, index) => {
     e.dataTransfer.setData("text/plain", index);
     setDraggedIndex(index);
@@ -71,21 +67,17 @@ const Home = () => {
     console.log("My New Items: >>> ", updatedItems);
     setItems(updatedItems);
     setDraggedIndex(null);
-    setSelectedIndex([]);
-    setCheckedNum(0);
   };
 
   return (
-    <itemInfoContext.Provider
-      value={[checkedNum, setCheckedNum, selectedIndex, setSelectedIndex]}
-    >
+    <itemInfoContext.Provider value={[checkedNum, setCheckedNum]}>
       <div className="bg-white rounded-lg divide-y-2">
         <div className="flex justify-between p-5">
           {checkedNum > 0 ? (
             <div>
               <input
                 checked={checkedNum > 0}
-                onChange={() => {}}
+                // onChange={toggleCheckBox}
                 type="checkbox"
               />{" "}
               {checkedNum} Items selected
@@ -94,12 +86,7 @@ const Home = () => {
             <div>Gallery</div>
           )}
 
-          <button
-            onClick={() => {
-              handleDeleteSelected();
-            }}
-            className="text-red-600"
-          >
+          <button className="text-red-600">
             {checkedNum > 0
               ? checkedNum > 1
                 ? "Delete Items"
@@ -111,9 +98,7 @@ const Home = () => {
         <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 gap-4 gap-y-6 p-10">
           {items.map((item, index) =>
             index == 0 ? (
-              // Feature Image
               <div
-                key={index}
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e)}
@@ -122,11 +107,10 @@ const Home = () => {
                   index === draggedIndex ? "scale-105" : ""
                 }`}
               >
-                <ItemCard key={item} index={0} image={item}></ItemCard>
+                <DisplayCard key={items[0]} image={items[0]}></DisplayCard>
               </div>
             ) : (
               <div
-                key={index}
                 draggable
                 onDragStart={(e) => handleDragStart(e, index)}
                 onDragOver={(e) => handleDragOver(e)}
@@ -137,12 +121,51 @@ const Home = () => {
                     : ""
                 }`}
               >
-                <ItemCard key={item} index={index} image={item}></ItemCard>
+                {/* {index === draggedIndex ? (
+                  <ItemCard></ItemCard>
+                ) : ( */}
+                <ItemCard key={item} image={item}></ItemCard>
+                {/* )} */}
               </div>
             )
           )}
           {<AddItemCard></AddItemCard>}
         </div>
+
+        {/* <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="image-grid" direction="horizontal">
+            {(provided) => (
+              <div
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+                className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 gap-4 gap-y-6 p-10"
+              >
+                {items.map((item, index) => (
+                  <Draggable key={item} draggableId={item} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        className="col-span-2 row-span-2"
+                      >
+                        {index == 0 ? (
+                          <DisplayCard
+                            key={items[0]}
+                            image={items[0]}
+                          ></DisplayCard>
+                        ) : (
+                          <ItemCard key={item} image={item}></ItemCard>
+                        )}
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {<AddItemCard></AddItemCard>}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext> */}
       </div>
     </itemInfoContext.Provider>
   );
